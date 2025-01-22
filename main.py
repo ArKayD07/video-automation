@@ -1,19 +1,41 @@
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 import openai
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+import edge_tts
+import asyncio
 
-gauth = GoogleAuth()
-gauth.LocalWebserverAuth()
-drive = GoogleDrive(gauth)
+openai.api_key = "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"
 
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("path/to/your/credentials.json", scope)
-client = gspread.authorize(creds)
+file_path = 'gptPrompt.txt'
+with open(file_path, 'r') as file:
+    prompt = file.read().strip()
 
-spreadsheet = client.open("Video Automation System")
-sheet = spreadsheet.sheet1
-first_cell_value = sheet.cell(1, 1).value
+def chatbot(prompt):
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "system", "content": "You are a helpful assistant."},
+                      {"role": "user", "content": prompt}]
+        )
+        return response['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        return f"An error occurred: {e}"
 
-print(f"The value of the first cell is: {first_cell_value}")
+def generate_audio(text, audio_name="output.mp3"):
+    try:
+        voice = "en-GB-SoniaNeural"
+        communicate = edge_tts.Communicate(text, voice)
+        asyncio.run(communicate.save(audio_name))
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+question = input('Enter a question: ')
+prompt = prompt + question
+response = chatbot(prompt)
+
+chapters = response.split("\n\n")
+chapter_strings = []
+for chapter in chapters:
+    chapter_strings.append(chapter.replace(chapter[chapter.find('*'):chapter.find('\n')], "").replace('\n', ''))
+
+for i in range(len(chapter_strings)):
+    audio_name = 'audio-' + str(i+1) + ".mp3"
+    generate_audio(chapter_strings[i],audio_name)
