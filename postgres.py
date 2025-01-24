@@ -6,7 +6,7 @@ import config as cfg
 
 try:
     print("Start...")
-    engine = psycopg2.connect(database="initial_db", host=cfg.db_host, port=cfg.db_port, user=cfg.db_user, password=cfg.db_password)
+    engine = psycopg2.connect(database=cfg.db_database, host=cfg.db_host, port=cfg.db_port, user=cfg.db_user, password=cfg.db_password)
     print("Trying...")
     if engine.status == psycopg2.extensions.STATUS_READY:
         print("Connection is open and ready.")
