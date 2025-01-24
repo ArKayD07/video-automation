@@ -28,7 +28,7 @@ def generate_audio(text, audio_name="output.mp3"):
         print(f"An error occurred: {e}")
 
 question = input('Enter a question: ')
-response = chatbot(prompt)
+response = chatbot(prompt, question)
 
 chapters = response.split("\n\n")
 chapter_strings = []
