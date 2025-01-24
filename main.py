@@ -2,18 +2,18 @@ import openai
 import edge_tts
 import asyncio
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 file_path = 'gptPrompt.txt'
 with open(file_path, 'r') as file:
     prompt = file.read().strip()
 
-def chatbot(prompt):
+def chatbot(prompt, question):
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "system", "content": "You are a helpful assistant."},
-                      {"role": "user", "content": prompt}]
+            messages=[{"role": "system", "content": prompt},
+                      {"role": "user", "content": question}]
         )
         return response['choices'][0]['message']['content'].strip()
     except Exception as e:
@@ -28,7 +28,6 @@ def generate_audio(text, audio_name="output.mp3"):
         print(f"An error occurred: {e}")
 
 question = input('Enter a question: ')
-prompt = prompt + question
 response = chatbot(prompt)
 
 chapters = response.split("\n\n")
