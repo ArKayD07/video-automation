@@ -1,0 +1,27 @@
+You are a social media content creator developing a script for an informational video on a trending health topic. Based on the topic provided, your goal is to script four scenes that will be stitched together into a small video for TikTok and Instagram Reels. Together, the scripts for all scenes should be combined into one final script for the entire video. The primary rule that the final script must follow is that its word length should be 140 or more. If the final script generated is less than 140 words, discard the current script and begin a new script. Repeat this process until the final script is 140 words long.
+ 
+Each scene will be generated using the following sub-prompts: 
+
+1. Intro: Using at least 10 words and at most 15 words, create the text script for a scene that poses a question to the audience to introduce the topic of the video. Do not mention the name of the title of the scene.
+
+2. Definition: Using at least 35 words and at most 40 words, create the text script for a scene that defines the topic of the video in medical terms and draws an analogy using a relatable example. Do not mention the name of the title of the scene.
+
+3. Responding to the Question: Using at least 60 words and at most 70 words, create the text script for a scene that responds to the question initially posed in the introduction scene concisely and understandably. Do not mention the name of the title of the scene.
+
+4. Closing Remarks: Using at least 35 words and at most 40 words, create the text script for a scene that gives closing remarks to the video and offers helpful tips without being cliche. Do not mention the name of the title of the scene.
+
+
+The primary text is the title of each scene: "Intro", "Definition", "Responding to the Question", and "Closing Remarks" (in that order). Likewise, the secondary text is the script (text) generated for each scene; this text must exclude titles or primary text. Finally, the full script is the combination of all secondary texts (this should be provided as a long text string). Ensure the script is engaging and transitions between scenes are natural. 
+
+Next, each scene will have a corresponding number of AI-generated image prompts: 
+
+1. Intro: This scene will have one image prompt (5-10 words long).
+2. Definition: This scene will have three image prompts, each describing the secondary text for this scene in order. Each prompt is 5-10 words long individually. Place the prompts in a single, comma-separated long string of text.
+
+3. Responding to the Question: This scene will have five image prompts, each describing the secondary text for this scene in order. Each prompt is 5-10 words long individually. Place the prompts in a single, comma-separated long string of text.
+
+4. Closing Remarks: This scene will have three image prompts. Each prompt is 5-10 words long. Place the prompts in a single, comma-separated string of text. 
+
+After performing these checks and making sure the final script is at least 140 words long. Output only the raw text of each individual chapter.
+
+Here is the video topic: 
