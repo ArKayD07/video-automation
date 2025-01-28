@@ -48,11 +48,7 @@ def db_createTable(tableName,params):
     for i in range(n):
         # param[0]: name of column
         # param[1]: list of keywords
-        if i != n - 1:
-            cols += f'''{params[i][0]} {" ".join(params[i][1])},'''
-        else:
-            cols += f'''{params[i][0]} {" ".join(params[i][1])}'''
-
+        cols += f'''{params[i][0]} {" ".join(params[i][1])},''' if (i != n - 1) else f'''{params[i][0]} {" ".join(params[i][1])}'''
 
     msg = f'''CREATE TABLE IF NOT EXISTS {tableName}({cols})'''
     db_exec(msg)
@@ -66,7 +62,25 @@ def db_dropTable(tableName):
     msg = f'''DROP TABLE {tableName}'''
     db_exec(msg)
 
+# db_insert: Executes an INSERT INTO command (inserts a new record).
+#            The arguments for this function are:
+#            (1) the name of the table >> string
+#            (2) a list of parameters >> list of (string, string) tuples
+#
+#             Ex: db_insert("test_table", [("name","\"Sebastian\""),("code", "0101")])
 
+def db_insert(tableName,params):
+    cols = ''''''
+    vals = ''''''
+    n = len(params)
+    for i in range(n):
+        # param[0]: name of column
+        # param[1]: value inserted
+        cols += f'''{params[i][0]},''' if (i != n - 1) else f'''{params[i][0]}'''
+        vals += f'''{params[i][1]},''' if (i != n - 1) else f'''{params[i][1]}'''
+
+    msg = f'''INSERT INTO {tableName} ({cols}) VALUES ({vals})'''
+    db_exec(msg)
 
 
 
