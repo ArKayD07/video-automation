@@ -74,14 +74,35 @@ def db_insert(tableName,params):
     vals = ''''''
     n = len(params)
     for i in range(n):
-        # param[0]: name of column
-        # param[1]: value inserted
+        # param[i][0]: name of column
+        # param[i][1]: value inserted
         cols += f'''{params[i][0]},''' if (i != n - 1) else f'''{params[i][0]}'''
         vals += f'''{params[i][1]},''' if (i != n - 1) else f'''{params[i][1]}'''
 
     msg = f'''INSERT INTO {tableName} ({cols}) VALUES ({vals})'''
     db_exec(msg)
 
+# db_query: Executes a SELECT statement (queries from a table).
+#           The arguments for this function are:
+#           (1) the name of the table >> string
+#           (2) a list of columns for the query >> string list
+#           (3) a string with a conditional WHERE statement >> string
+#
+#       Ex: db_query("test_table",["name","code"],"name=\"Sebastian\" AND code=0101")
 
+def db_query(tableName,cols,conds):
+    selectCols = ",".join(cols) if (len(cols) != 0) else "*"
+    conditions = f'''WHERE {conds}''' if (len(conds) != 0) else ''''''
+    msg = f'''SELECT {selectCols} FROM {tableName} {conditions}'''
+    db_exec(msg)
 
+# db_delete: Executes a DELETE statement (deletes a record).
+#            The arguments for this function are:
+#            (1) the name of the table >> string
+#            (2) a string with a conditional WHERE statement >> string
+#
+#        Ex: db_delete("test_table","name=\"Sebastian\"")
 
+def db_delete(tableName,conds):
+    msg = f'''DELETE FROM {tableName} WHERE {conds}'''
+    db_exec(msg)
