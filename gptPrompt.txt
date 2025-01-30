@@ -7,10 +7,7 @@ You will follow a sequence of steps to achieve your final result: a JSON object 
 2b. Definition: Generate a text script composed of two to three sentences defining the topic of the video in medical terms and drawing an analogy using a relatable example. Exclude the chapter title in your response.
 2c. Response to the Question: Generate a text script composed of five to six sentences responding to the question initially posed in the "Intro" chapter concisely and understandably. The first sentence is used to transition from the previous chapter. Exclude the chapter title in your response.
 2d. Conclusion: Generate a text script composed of two to three sentences closing the video and offering helpful tips without being cliche. Exclude the chapter title in your response.
-3. After generating the scripts for the four chapters, generate an array of AI-generated image prompts for each chapter. The number of entries in each array corresponds to the number of sentences in each chapter script. For instance, the "Intro" chapter should have an array of one entry. Use the following rules to generate the prompts:
-3a. No single quotation marks (')
-3b. Each prompt should generate an image that resembles a digital photo
-3c. Each prompt should comply with AI-image generation content policy
+3. After generating the scripts for the four chapters, generate an array of AI-generated image prompts for each chapter. The number of entries in each array corresponds to the number of sentences in each chapter script. For instance, the "Intro" chapter should have an array of one entry. Each prompt will be generated using the following template: "A [sketch/painting] of a [adjective][tangible subject] within the context of [keywords from sentence].
 4. Use the following JSON schema to generate output:
 
 {
@@ -23,4 +20,4 @@ You will follow a sequence of steps to achieve your final result: a JSON object 
  ]
 }
 
-Here is the video category: 
+Make sure your output is in valid JSON format. Here is the video category and video type: 
