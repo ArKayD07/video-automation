@@ -1,22 +1,26 @@
 import openai
+from openai import OpenAI
 import edge_tts
 import asyncio
 import requests
 import configuration
 import json
 
+client = OpenAI(api_key=configuration.openai.api_key)
 file_path = 'gptPrompt.txt'
 with open(file_path, 'r') as file:
     prompt = file.read().strip()
 
 def chatbot(prompt, question):
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "system", "content": prompt},
-                      {"role": "user", "content": question}]
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "developer", "content": prompt},
+                {"role": "user","content": question}
+            ]
         )
-        return response['choices'][0]['message']['content'].strip()
+        return completion.choices[0].message.content
     except Exception as e:
         return f"An error occurred: {e}"
 
@@ -29,12 +33,13 @@ def generate_audio(text, audio_name="output.mp3"):
         print(f"An error occurred: {e}")
 
 def generate_image(prompt, image_name):
-    response = openai.Image.create(
+    response = client.images.generate(
+        model='dall-e-3',
         prompt=prompt,
         n=1,
         size="1024x1024"
     )
-    image_url = response['data'][0]['url']
+    image_url = response.data[0].url
     image_data = requests.get(image_url).content
     with open(image_name, 'wb') as handler:
         handler.write(image_data)
@@ -64,9 +69,6 @@ except Exception as e:
 for i in range(len(chapter_strings)):
     audio_name = 'audio-' + str(i+1) + ".mp3"
     generate_audio(chapter_strings[i], audio_name)
-
-for i, prompt in enumerate(image_prompts):
-    image_name = f'Video Files/image-{i+1}.png'
-    generate_image(prompt, image_name)
-
-print(image_prompts)
+for i in range(len(image_prompts)):
+    image_name = 'Video Files/image-' + str(i+1) + ".png"
+    generate_image(image_prompts[i], image_name)
