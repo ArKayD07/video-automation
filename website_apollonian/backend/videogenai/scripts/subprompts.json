@@ -1,0 +1,8 @@
+{
+    "informational": {
+        "intro": "Generate a text script composed of a sentence-long question posed to the audience to introduce the topic. Exclude the chapter title in your response.",
+        "definition": "Generate a text script composed of two to three sentences defining the topic of the video in medical terms and drawing an analogy using a relatable example. Exclude the chapter title in your response.",
+        "response-to-the-question": "Generate a text script composed of five to six sentences responding to the question initially posed in the 'Intro' chapter concisely and understandably. The first sentence is used to transition from the previous chapter. Exclude the chapter title in your response.",
+        "conclusion": "Generate a text script composed of two to three sentences closing the video and offering helpful tips without being cliche. Exclude the chapter title in your response."
+    }
+}
