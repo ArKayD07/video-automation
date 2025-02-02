@@ -1,7 +1,7 @@
 import asyncio
 import boto3
 import edge_tts
-import configuration
+import config
 
 s3 = boto3.client('s3')
 bucket_name = 'apollonianbucket'
