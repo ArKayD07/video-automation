@@ -19,8 +19,8 @@ Legend:
 |       |----- suggestions.json [⚠️]
 |       |----- subprompts.json [⚠️] 
 |       |----- gen_script.py [⚠️]
-|       |----- gen_images.py [⚠️]
-|       |----- gen_audio.py [⚠️]
+|       |----- gen_images.py [✔️]
+|       |----- gen_audio.py [✔️]
 |       |----- gen_video.py
 |   |----- test
 |     |----- __init__.py
