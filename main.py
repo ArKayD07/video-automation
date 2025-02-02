@@ -30,7 +30,7 @@ def generate_audio(text, audio_name="output.mp3"):
     try:
         voice = "en-GB-SoniaNeural"
         communicate = edge_tts.Communicate(text, voice)
-        local_path = f"Video Files/{audio_name}"
+        local_path = f"tmp/{audio_name}"
         asyncio.run(communicate.save(local_path))
         s3.upload_file(local_path, bucket_name, audio_name)
         print(f"Uploaded {audio_name} to S3 bucket {bucket_name}")
@@ -80,5 +80,5 @@ for i in range(len(chapter_strings)):
     audio_name = 'audio-' + str(i+1) + ".mp3"
     generate_audio(chapter_strings[i], audio_name)
 for i in range(len(image_prompts)):
-    image_name = 'Video Files/image-' + str(i+1) + ".png"
+    image_name = 'tmp/image-' + str(i+1) + ".png"
     generate_image(image_prompts[i], image_name)
