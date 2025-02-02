@@ -5,7 +5,7 @@ def generate_audio(text, audio_name="output.mp3"):
     try:
         voice = "en-GB-SoniaNeural"
         communicate = edge_tts.Communicate(text, voice)
-        asyncio.run(communicate.save(f"tmp/{audio_name}"))
+        asyncio.run(communicate.save(f"tmp/audio/{audio_name}"))
     except Exception as e:
         print(f"An error occurred: {e}")
 

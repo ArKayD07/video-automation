@@ -24,6 +24,7 @@ Legend:
 |       |----- gen_video.py
 |   |----- test
 |     |----- __init__.py
+|     |----- main.py
 |     |----- test.py
 |     |----- tmp
 |       |----- images
