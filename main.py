@@ -10,6 +10,19 @@ client = OpenAI(api_key=configuration.openai_api_key)
 s3 = boto3.client('s3')
 bucket_name = 'apollonianbucket'
 file_path = 'gptPrompt.txt'
+voices = {'friendly': 'en-GB-RyanNeural', 
+          'positive': 'en-US-AriaNeural', 
+          'confident': 'en-US-EricNeural', 
+          'professional': 'en-GB-SoniaNeural', 
+          'cute': 'en-US-AnaNeural', 
+          'authority': 'en-US-ChristopherNeural', 
+          'reliable': 'en-US-EricNeural', 
+          'humorous': 'zh-CN-liaoning-XiaobeiNeural', 
+          'rational': 'en-US-SteffanNeural',
+          'passionate': 'en-US-GuyNeural',
+          'considerate': 'en-US-JennyNeural',
+          'pleasant': 'en-US-MichelleNeural',
+          'lively': 'en-US-RogerNeural'}
 with open(file_path, 'r') as file:
     prompt = file.read().strip()
 
@@ -26,11 +39,11 @@ def chatbot(prompt, question):
     except Exception as e:
         return f"An error occurred: {e}"
 
-def generate_audio(text, audio_name="output.mp3"):
+def generate_audio(text, tone, audio_name="output.mp3"):
     try:
-        voice = "en-GB-SoniaNeural"
+        voice = voices[tone]
         communicate = edge_tts.Communicate(text, voice)
-        local_path = f"tmp/{audio_name}"
+        local_path = f"Video Files/{audio_name}"
         asyncio.run(communicate.save(local_path))
         s3.upload_file(local_path, bucket_name, audio_name)
         print(f"Uploaded {audio_name} to S3 bucket {bucket_name}")
@@ -66,6 +79,7 @@ image_prompts = []
 
 try:
     response_json = json.loads(response)
+    tone = response_json['tone']
     for chapter in response_json['chapters']:
         chapter_strings.append(chapter['secondary text'])
         image_prompts.extend(chapter['image prompts'])
@@ -78,7 +92,7 @@ except Exception as e:
 
 for i in range(len(chapter_strings)):
     audio_name = 'audio-' + str(i+1) + ".mp3"
-    generate_audio(chapter_strings[i], audio_name)
+    generate_audio(chapter_strings[i], tone, audio_name)
 for i in range(len(image_prompts)):
-    image_name = 'tmp/image-' + str(i+1) + ".png"
+    image_name = 'Video Files/image-' + str(i+1) + ".png"
     generate_image(image_prompts[i], image_name)
