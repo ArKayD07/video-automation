@@ -1,4 +1,4 @@
-import openai
+import boto3
 from openai import OpenAI
 import edge_tts
 import asyncio
@@ -6,7 +6,9 @@ import requests
 import configuration
 import json
 
-client = OpenAI(api_key=configuration.openai.api_key)
+client = OpenAI(api_key=configuration.openai_api_key)
+s3 = boto3.client('s3')
+bucket_name = 'apollonianbucket'
 file_path = 'gptPrompt.txt'
 with open(file_path, 'r') as file:
     prompt = file.read().strip()
@@ -28,7 +30,10 @@ def generate_audio(text, audio_name="output.mp3"):
     try:
         voice = "en-GB-SoniaNeural"
         communicate = edge_tts.Communicate(text, voice)
-        asyncio.run(communicate.save(f"Video Files/{audio_name}"))
+        local_path = f"tmp/{audio_name}"
+        asyncio.run(communicate.save(local_path))
+        s3.upload_file(local_path, bucket_name, audio_name)
+        print(f"Uploaded {audio_name} to S3 bucket {bucket_name}")
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -43,6 +48,11 @@ def generate_image(prompt, image_name):
     image_data = requests.get(image_url).content
     with open(image_name, 'wb') as handler:
         handler.write(image_data)
+    try:
+        s3.upload_file(image_name, bucket_name, image_name)
+        print(f"Uploaded {image_name} to S3 bucket {bucket_name}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 category = input('Enter a category: ')
 videoType = input('Enter a video type: ')
@@ -70,5 +80,5 @@ for i in range(len(chapter_strings)):
     audio_name = 'audio-' + str(i+1) + ".mp3"
     generate_audio(chapter_strings[i], audio_name)
 for i in range(len(image_prompts)):
-    image_name = 'Video Files/image-' + str(i+1) + ".png"
+    image_name = 'tmp/image-' + str(i+1) + ".png"
     generate_image(image_prompts[i], image_name)

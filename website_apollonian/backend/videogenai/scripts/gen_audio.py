@@ -1,11 +1,18 @@
-import edge_tts
 import asyncio
+import boto3
+import edge_tts
+import config
+
+s3 = boto3.client('s3')
+bucket_name = 'apollonianbucket'
 
 def generate_audio(text, audio_name="output.mp3"):
     try:
         voice = "en-GB-SoniaNeural"
         communicate = edge_tts.Communicate(text, voice)
-        asyncio.run(communicate.save(f"tmp/audio/{audio_name}"))
+        local_path = f"tmp/{audio_name}"
+        asyncio.run(communicate.save(local_path))
+        s3.upload_file(local_path, bucket_name, audio_name)
     except Exception as e:
         print(f"An error occurred: {e}")
 
